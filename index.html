@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbearia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Barbearia</h1>
+    <p>Agende seu horário</p>
+  </header>
+
+  <section class="formulario">
+    <h2>Novo Agendamento</h2>
+    <input type="text" id="nome" placeholder="Seu nome">
+    
+    <select id="servico"> <!-- troquei serviço -> servico -->
+      <option value="">Selecione o serviço</option>
+      <option value="Corte de Cabelo">Corte de Cabelo</option>
+      <option value="Barba">Barba</option>
+      <option value="Corte + Barba">Corte + Barba</option>
+    </select>
+
+    <input type="date" id="data">
+    <input type="time" id="hora">
+
+    <button onclick="agenda()">Agendar</button> <!-- troquei agendar -> agenda -->
+  </section>
+
+  <section class="agendamentos" id="listaAgendamentos">
+    <h2>Agendamentos:</h2>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
