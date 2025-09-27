@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Barbearia — Sua Agenda</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:," />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container header-wrap">
+      <div class="brand">
+        <h1>BARBEARIA</h1>
+        <p>Votorantim — SP</p>
+      </div>
+      <nav class="nav">
+        <a href="#servicos">Serviços</a>
+        <a href="#agendar">Agendar</a>
+        <a href="#contato">Contato</a>
+        <a href="#horarios">Horários</a>
+        <button id="btnAbrirAdmin" class="btn outline">Área Admin</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h2>Agende online seu próximo corte</h2>
+        <p>Horário individual. Um agendamento por pessoa. Tolerância de 10 minutos — chegue 5 min antes.</p>
+        <a class="btn primary" href="#agendar">Começar agora</a>
+      </div>
+      <div class="brand">
+  <img src="img/img.png/img2.png" alt="Logo Barbearia" class="img-logo">
+  <div>
+  </div>
+</div>
+  </section>
+
+  <!-- Serviços -->
+  <main class="container">
+    <section id="servicos" class="card">
+      <h3>Serviços <span class="sub">Selecione o serviço para agendar</span></h3>
+      <div id="listaServicos" class="cards"></div>
+    </section>
+
+    <!-- Agendar -->
+    <section id="agendar" class="card">
+      <h3>Novo Agendamento</h3>
+      <form id="form-agenda" autocomplete="off">
+        <div class="grid">
+          <label>Seu nome*
+            <input type="text" id="nome" required />
+          </label>
+          <label>WhatsApp*
+            <input type="tel" id="telefone" placeholder="(15) 99999-9999" required />
+          </label>
+          <label>Serviço*
+            <select id="servico" required></select>
+          </label>
+          <label>Profissional*
+            <select id="profissional" required></select>
+          </label>
+          <label>Data*
+            <input type="date" id="data" required />
+          </label>
+          <label>Hora* (intervalos de 30min)
+            <input type="time" id="hora" step="1800" required />
+          </label>
+        </div>
+        <label>Observações
+          <textarea id="obs" rows="2" placeholder="Detalhes (opcional)"></textarea>
+        </label>
+        <div class="actions">
+          <button type="submit" class="btn primary">Agendar</button>
+          <button type="reset" class="btn">Limpar</button>
+        </div>
+        <p class="hint">* Obrigatório | Novo agendamento nasce como <b>pendente</b> e aguarda aprovação.</p>
+      </form>
+    </section>
+
+    <!-- Lista (cliente vê status / admin gerencia) -->
+    <section class="card">
+      <div class="list-header">
+        <h3>Agendamentos</h3>
+        <div class="filters">
+          <select id="filtroStatus">
+            <option value="">Todos os status</option>
+            <option value="pendente">Pendentes</option>
+            <option value="aprovado">Aprovados</option>
+            <option value="recusado">Recusados</option>
+          </select>
+          <select id="filtroProf">
+            <option value="">Todos os profissionais</option>
+          </select>
+          <input type="date" id="filtroData" />
+          <button id="btnLimparFiltros" class="btn">Limpar</button>
+        </div>
+      </div>
+
+      <div id="listaAgendamentos" class="list"></div>
+      <template id="tpl-agendamento">
+        <article class="item">
+          <div class="item-main">
+            <h4 class="item-titulo"></h4>
+            <p class="item-meta"></p>
+            <p class="item-obs"></p>
+            <span class="status-badge" data-status=""></span>
+          </div>
+          <div class="item-actions">
+            <button class="btn success btn-aprovar" style="display:none">Aprovar</button>
+            <button class="btn warn btn-recusar" style="display:none">Recusar</button>
+            <button class="btn danger btn-excluir">Excluir</button>
+          </div>
+        </article>
+      </template>
+      <p id="vazio" class="empty">Nenhum agendamento encontrado.</p>
+    </section>
+
+    <!-- Contato -->
+    <section id="contato" class="card">
+      <h3>Contato</h3>
+      <div class="grid grid-2">
+        <div>
+          <p><b>Endereço:</b> Votorantim/SP</p>
+          <p><b>WhatsApp:</b> <a id="wa" href="https://wa.me/5515998509488" target="_blank" rel="noopener">(15) 99850-9488</a></p>
+          <p><b>Política:</b> horário individual — 1 por pessoa — tolerância 10 min</p>
+          <div class="actions">
+            <a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/5515998509488?text=Olá! Quero agendar um horário.">Chamar no WhatsApp</a>
+            <a class="btn outline" target="_blank" rel="noopener" href="https://maps.google.com?q=Votorantim+SP+Monte+Verde">Ver no Mapa</a>
+          </div>
+        </div>
+        <iframe class="mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+          src="https://maps.google.com/maps?q=Votorantim%20SP&t=m&z=14&output=embed&iwloc=near"></iframe>
+      </div>
+    </section>
+
+    <!-- Horários -->
+    <section id="horarios" class="card">
+      <h3>Horários de Funcionamento</h3>
+      <ul class="horarios">
+        <li><b>Terça:</b> 09:30–13:00 / 14:00–19:00</li>
+        <li><b>Quarta:</b> 09:30–13:00 / 14:00–19:00</li>
+        <li><b>Quinta:</b> 09:30–13:00 / 14:00–19:00</li>
+        <li><b>Sexta:</b> 09:30–13:00 / 14:00–22:00</li>
+        <li><b>Sábado:</b> 07:00–13:00 / 14:00–18:00</li>
+        <li><b>Domingo/Segunda:</b> Fechado</li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- Modal Admin -->
+  <dialog id="modalAdmin">
+    <form method="dialog" class="modal">
+      <h3>Entrar como Admin</h3>
+      <label>Usuário
+        <input id="adminUser" type="text" placeholder="admin" value="admin" />
+      </label>
+      <label>Senha
+        <input id="adminPass" type="password" placeholder="1234" />
+      </label>
+      <div class="actions">
+        <button id="btnLogin" class="btn primary">Entrar</button>
+        <button id="btnFecharAdmin" class="btn">Fechar</button>
+      </div>
+      <p class="hint">Demonstração local (client-side). Em produção, faça no servidor.</p>
+    </form>
+  </dialog>
+
+ <footer>
+  <div class="footer-content">
+    <img src="img/img.png/img2.png" alt="Logo Barbearia" class="logo-circular">
+    <span class="nome-barbearia">Barbearia Estilo</span>
+  </div>
+</footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
