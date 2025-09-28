@@ -120,3 +120,65 @@ footer {
   font-weight: bold;
   font-family: Arial, sans-serif;
 }
+/* Ajuste rodapé no mobile */
+@media (max-width: 768px) {
+  .logo-circular {
+    width: 80px;
+    height: 80px;
+  }
+
+  .nome-barbearia {
+    font-size: 28px;
+  }
+}
+
+/* Ajuste hero no mobile */
+@media (max-width: 768px) {
+  .hero h2 {
+    font-size: 22px;
+    text-align: center;
+  }
+  .hero p {
+    font-size: 14px;
+    text-align: center;
+  }
+  .hero-grid {
+    text-align: center;
+    gap: 16px;
+  }
+}
+
+/* MENU MOBILE (hamburguer) */
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    display: none;
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--card);
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .nav.show {
+    display: flex;
+  }
+  .menu-toggle {
+    display: block;
+  }
+}
+@media (max-width:600px){
+  dialog .modal { width: 90%; }
+}
+/* Estilos para o botão de logout */

@@ -1,6 +1,7 @@
 // ========================================
 // ============ CONFIGURAÇÕES =============
 // ========================================
+// ================== CONFIG ===================
 const SERVICOS = [
   { id: "corte", nome: "Corte", duracaoMin: 30, preco: 35, profs: ["MATEUS"] },
   { id: "barba", nome: "Barba", duracaoMin: 30, preco: 35, profs: ["MATEUS"] },
@@ -9,13 +10,11 @@ const SERVICOS = [
 ];
 
 const HORARIO = { inicio: 9, fim: 22, stepMin: 30 };
-const LS_KEY = "boava_agendamentos_v3";
-const AUTH_KEY = "boava_admin_session_v3";
+const LS_KEY = "boava_agendamentos_v4";
+const AUTH_KEY = "boava_admin_session_v4";
 const ADMIN = { user: "admin", pass: "1234" };
 
-// ========================================
-// ============ HELPERS ===================
-// ========================================
+// ================== HELPERS ==================
 const $ = (s, ctx=document) => ctx.querySelector(s);
 const $$ = (s, ctx=document) => [...ctx.querySelectorAll(s)];
 
@@ -60,9 +59,30 @@ const auth = {
 
 const uuid = () => crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random().toString(36).slice(2);
 
-// ========================================
-// ============ RENDER SERVIÇOS =========
-// ========================================
+// ================== TOAST ==================
+function toast(msg, type="info"){
+  let box = $("#toastBox");
+  if(!box){
+    box = document.createElement("div");
+    box.id = "toastBox";
+    box.style.cssText = `
+      position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; gap:8px; z-index:1000;
+    `;
+    document.body.appendChild(box);
+  }
+  const t = document.createElement("div");
+  t.textContent = msg;
+  t.style.cssText = `
+    background:${type==="error"?"#dc2626":"#3a6bff"};
+    color:white; padding:10px 16px; border-radius:8px;
+    box-shadow:0 4px 10px rgba(0,0,0,.4); animation:fadein .3s ease;
+  `;
+  box.appendChild(t);
+  setTimeout(()=>{ t.style.opacity="0"; t.style.transition="opacity .4s"; setTimeout(()=>t.remove(),400); },3000);
+}
+
+// ================== RENDER SERVIÇOS ==================
 function renderServicos(){
   const wrap = $("#listaServicos");
   if (!wrap) return;
@@ -93,9 +113,7 @@ function renderServicos(){
   });
 }
 
-// ========================================
-// ============ SELECTS ===================
-// ========================================
+// ================== SELECTS ==================
 function popularServicos(){
   const sel = $("#servico");
   if(!sel) return;
@@ -109,9 +127,7 @@ function popularProfissionais(){
   sel.innerHTML = `<option value="">Selecione…</option>` + (sv? sv.profs.map(p=>`<option>${p}</option>`).join("") : "");
 }
 
-// ========================================
-// ============ REGRAS ===================
-// ========================================
+// ================== REGRAS ==================
 function conflitoMesmoHorario(lista, {profissional,data,hora}, ignorarId=null){
   return lista.some(a=>a.id!==ignorarId && a.profissional===profissional && a.data===data && a.hora===hora && a.status!=="recusado");
 }
@@ -127,9 +143,7 @@ function clienteJaTemAtivo(lista, {nome,telefone}){
   });
 }
 
-// ========================================
-// ============ LISTA AGENDAMENTOS =======
-// ========================================
+// ================== LISTA AGENDAMENTOS ==================
 const statusCss = s => ({pendente:"status-pendente",aprovado:"status-aprovado",recusado:"status-recusado"}[s]||"");
 
 function renderLista(){
@@ -142,7 +156,12 @@ function renderLista(){
     .filter(a => fStatus? a.status===fStatus : true)
     .filter(a => fProf? a.profissional===fProf : true)
     .filter(a => fData? a.data===fData : true)
-    .sort((a,b)=> new Date(`${a.data}T${a.hora}`)-new Date(`${b.data}T${b.hora}`));
+    .sort((a,b)=>{
+      const da = new Date(`${a.data}T${a.hora}`);
+      const db = new Date(`${b.data}T${b.hora}`);
+      if(da-db!==0) return da-db;
+      return (a.criadoEm||"").localeCompare(b.criadoEm||"");
+    });
 
   const cont = $("#listaAgendamentos");
   if(!cont) return;
@@ -165,7 +184,6 @@ function renderLista(){
     const btnR = $(".btn-recusar", node);
     const btnE = $(".btn-excluir", node);
 
-    // Só mostra botões aprovar/recusar se for admin e status pendente
     if(auth.isAdmin){
       if(a.status==="pendente"){
         btnA.style.display = "inline-block";
@@ -186,7 +204,6 @@ function renderLista(){
     cont.appendChild(node);
   });
 
-  // Popular filtro de profissionais
   const profSel = $("#filtroProf");
   if(profSel){
     const allProfs = [...new Set(SERVICOS.flatMap(s=>s.profs))];
@@ -194,29 +211,27 @@ function renderLista(){
   }
 }
 
-// ========================================
-// ============ AÇÕES ADMIN ===============
-// ========================================
+// ================== AÇÕES ADMIN ==================
 function aprovar(id){
-  if(!auth.isAdmin){ alert("Ação restrita ao admin."); return; }
+  if(!auth.isAdmin){ toast("Ação restrita ao admin.","error"); return; }
   const lista = storage.load();
   const i = lista.findIndex(a=>a.id===id);
   if(i<0) return;
   if(conflitoMesmoHorario(lista.filter(a=>a.id!==id), lista[i])){
-    alert("Conflito de horário com outro agendamento."); return;
+    toast("Conflito de horário com outro agendamento.","error"); return;
   }
   lista[i].status = "aprovado"; storage.save(lista); renderLista();
-  alert(`Agendamento de ${lista[i].nome} aprovado.`);
+  toast(`Agendamento de ${lista[i].nome} aprovado.`,"info");
 }
 
 function recusar(id){
-  if(!auth.isAdmin){ alert("Ação restrita ao admin."); return; }
+  if(!auth.isAdmin){ toast("Ação restrita ao admin.","error"); return; }
   const lista = storage.load();
   const i = lista.findIndex(a=>a.id===id);
   if(i<0) return;
   if(!confirm(`Deseja realmente cancelar o agendamento de "${lista[i].nome}"?`)) return;
   lista[i].status = "recusado"; storage.save(lista); renderLista();
-  alert(`Agendamento de ${lista[i].nome} cancelado.`);
+  toast(`Agendamento de ${lista[i].nome} cancelado.`,"info");
 }
 
 function excluir(id){
@@ -225,11 +240,10 @@ function excluir(id){
   if(!ag) return;
   if(!confirm(`Excluir agendamento de "${ag.nome}"?`)) return;
   storage.save(lista.filter(a=>a.id!==id)); renderLista();
+  toast("Agendamento excluído.","info");
 }
 
-// ========================================
-// ============ FORMULÁRIO ================
-// ========================================
+// ================== FORMULÁRIO ==================
 function initForm(){
   $("#data").min = hojeISO();
   popularServicos(); popularProfissionais();
@@ -246,19 +260,20 @@ function initForm(){
     const hora = $("#hora").value;
     const obs = $("#obs").value.trim();
 
-    if(!nome||!telefone||!servico||!profissional||!data||!hora){ alert("Preencha todos os campos obrigatórios."); return; }
-    if(!dentroExpediente(hora)){ alert("Escolha um horário válido dentro do expediente."); return; }
+    if(!nome||!telefone||!servico||!profissional||!data||!hora){ toast("Preencha todos os campos obrigatórios.","error"); return; }
+    if(!/^\d{9,11}$/.test(telefone)){ toast("Digite um telefone válido (somente números).","error"); return; }
+    if(!dentroExpediente(hora)){ toast("Escolha um horário válido dentro do expediente.","error"); return; }
     const {dt} = fmt(data,hora);
-    if(!dt||dt.getTime()<Date.now()){ alert("Não é possível agendar no passado."); return; }
+    if(!dt||dt.getTime()<Date.now()){ toast("Não é possível agendar no passado.","error"); return; }
 
     const lista = storage.load();
-    if(clienteJaTemAtivo(lista,{nome,telefone})){ alert("Você já possui agendamento ativo."); return; }
-    if(conflitoMesmoHorario(lista,{profissional,data,hora})){ alert(`${profissional} já possui agendamento nesse horário.`); return; }
+    if(clienteJaTemAtivo(lista,{nome,telefone})){ toast("Você já possui agendamento ativo.","error"); return; }
+    if(conflitoMesmoHorario(lista,{profissional,data,hora})){ toast(`${profissional} já possui agendamento nesse horário.`,"error"); return; }
 
     const novo = { id:uuid(), nome, telefone, servico, profissional, data, hora, obs, status:"pendente", criadoEm:new Date().toISOString() };
     lista.push(novo); storage.save(lista);
     $("#form-agenda").reset(); $("#data").min = hojeISO(); renderLista();
-    alert("Agendamento criado! Aguarde aprovação.");
+    toast("Agendamento criado! Aguarde aprovação.","info");
   });
 
   $("#filtroStatus")?.addEventListener("change", renderLista);
@@ -269,9 +284,7 @@ function initForm(){
   });
 }
 
-// ========================================
-// ============ ADMIN MODAL ===============
-// ========================================
+// ================== ADMIN MODAL ==================
 function initAdmin(){
   const modal = $("#modalAdmin");
   $("#btnAbrirAdmin")?.addEventListener("click", ()=> modal.showModal());
@@ -280,15 +293,16 @@ function initAdmin(){
     e.preventDefault();
     const u = $("#adminUser").value.trim();
     const p = $("#adminPass").value.trim();
-    if(auth.login(u,p)){ modal.close(); renderLista(); alert("Admin autenticado."); }
-    else alert("Credenciais inválidas.");
+    if(auth.login(u,p)){ modal.close(); renderLista(); toast("Admin autenticado.","info"); }
+    else toast("Credenciais inválidas.","error");
+  });
+  $("#btnLogout")?.addEventListener("click", ()=>{
+    auth.logout(); renderLista(); toast("Sessão encerrada.","info");
   });
   modal?.addEventListener("click", e=> { if(e.target===modal) modal.close(); });
 }
 
-// ========================================
-// ============ BOOT ======================
-// ========================================
+// ================== BOOT ==================
 document.addEventListener("DOMContentLoaded", ()=>{
   renderServicos();
   initForm();
