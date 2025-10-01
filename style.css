@@ -131,54 +131,111 @@ footer {
     font-size: 28px;
   }
 }
-
-/* Ajuste hero no mobile */
-@media (max-width: 768px) {
-  .hero h2 {
-    font-size: 22px;
-    text-align: center;
-  }
-  .hero p {
-    font-size: 14px;
-    text-align: center;
-  }
-  .hero-grid {
-    text-align: center;
-    gap: 16px;
-  }
+ /* Menu padrão (desktop) */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
 }
 
-/* MENU MOBILE (hamburguer) */
+.menu {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.menu li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.menu li a:hover {
+  color: #1e90ff;
+}
+
+/* Botão hambúrguer escondido no desktop */
 .menu-toggle {
   display: none;
   font-size: 28px;
   background: none;
   border: none;
-  color: var(--text);
+  color: #fff;
   cursor: pointer;
 }
 
-@media (max-width: 900px) {
-  .nav {
-    display: none;
-    position: absolute;
-    top: 70px;
-    right: 20px;
+/* Mobile */
+@media (max-width: 768px) {
+  .menu {
+    display: none; /* escondido inicialmente */
     flex-direction: column;
-    gap: 12px;
-    background: var(--card);
-    padding: 16px;
-    border-radius: 12px;
-    box-shadow: var(--shadow);
+    background: #111;
+    position: absolute;
+    top: 60px; /* altura do header */
+    right: 20px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    z-index: 1000;
   }
-  .nav.show {
-    display: flex;
+
+  .menu.active {
+    display: flex; /* aparece quando o JS adiciona a classe */
   }
+
+  .menu li {
+    margin: 10px 0;
+  }
+
   .menu-toggle {
-    display: block;
+    display: block; /* aparece no mobile */
   }
 }
-@media (max-width:600px){
-  dialog .modal { width: 90%; }
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
 }
-/* Estilos para o botão de logout */
+
+/* Área admin */
+.admin-area {
+  margin-left: auto; /* empurra o admin para a direita */
+}
+
+.btn-admin {
+  background: #1e90ff;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-admin:hover {
+  background: #0c70d4;
+}
+
+/* Mobile: Admin também fica junto ao menu */
+@media (max-width: 768px) {
+  .admin-area {
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+.admin-area {
+  margin-left: auto;
+}
+
+.btn-admin {
+  background: #1e90ff;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}

@@ -8,22 +8,21 @@
   <link rel="icon" href="data:," />
 </head>
 <body>
-    <header class="topbar">
-  <div class="container header-wrap">
-    <div class="brand">
-      <h1>BARBEARIA</h1>
-      <p>Votorantim — SP</p>
-    </div>
-    <button class="menu-toggle">☰</button>
-    <nav class="nav">
-      <a href="#servicos">Serviços</a>
-      <a href="#agendar">Agendar</a>
-      <a href="#contato">Contato</a>
-      <a href="#horarios">Horários</a>
-      <button id="btnAbrirAdmin" class="btn outline">Área Admin</button>
-    </nav>
-  </div>
-</header>
+ <header>
+  <nav class="navbar">
+    <div class="logo">BARBEARIA</div>
+
+    <ul id="menu" class="menu">
+      <li><a href="#servicos">Serviços</a></li>
+      <li><a href="#agendar">Agendar</a></li>
+      <li><a href="#contato">Contato</a></li>
+      <li><a href="#horarios">Horários</a></li>
+      <li><a href="#" id="btnAbrirAdmin">Admin</a></li> <!-- corrigido -->
+    </ul>
+
+    <button id="menu-toggle" class="menu-toggle">☰</button>
+  </nav>
+ </header>
 
   <!-- Hero -->
   <section class="hero">
@@ -34,10 +33,9 @@
         <a class="btn primary" href="#agendar">Começar agora</a>
       </div>
       <div class="brand">
-  <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
-  <div>
-  </div>
-</div>
+        <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
+      </div>
+    </div>
   </section>
 
   <!-- Serviços -->
@@ -152,7 +150,7 @@
     </section>
   </main>
 
-  <!-- Modal Admin -->
+  <!-- Modal Admin corrigido -->
   <dialog id="modalAdmin">
     <form method="dialog" class="modal">
       <h3>Entrar como Admin</h3>
@@ -165,7 +163,6 @@
       <div class="actions">
         <button id="btnLogin" class="btn primary">Entrar</button>
         <button id="btnFecharAdmin" class="btn">Fechar</button>
-
       </div>
       <p class="hint">Demonstração local (client-side). Em produção, faça no servidor.</p>
     </form>
@@ -173,11 +170,21 @@
 
  <footer>
   <div class="footer-content">
-  <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
+    <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
     <span class="nome-barbearia">Barbearia</span>
   </div>
-</footer>
+ </footer>
 
   <script src="script.js"></script>
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("menu");
+
+    toggle.addEventListener("click", function() {
+      menu.classList.toggle("active");
+    });
+  });
+  </script>
 </body>
 </html>
