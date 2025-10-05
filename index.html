@@ -1,190 +1,309 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Barbearia — Sua Agenda</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="data:," />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbearia Eduardo - Sistema Completo</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <header>
-  <nav class="navbar">
-    <div class="logo">BARBEARIA</div>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-cut fa-2x" style="color: #d4af37;"></i>
+                    <h1>Barbearia Eduardo</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#services">Serviços</a></li>
+                        <li><a href="#schedule">Agendar</a></li>
+                        <li><a href="#about">Sobre</a></li>
+                        <li><a href="#contact">Contato</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="loginBtn">Acesso Staff</button>
+                    <button class="btn btn-primary" id="scheduleBtn">Agendar Horário</button>
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <ul id="menu" class="menu">
-      <li><a href="#servicos">Serviços</a></li>
-      <li><a href="#agendar">Agendar</a></li>
-      <li><a href="#contato">Contato</a></li>
-      <li><a href="#horarios">Horários</a></li>
-      <li><a href="#" id="btnAbrirAdmin">Admin</a></li> <!-- corrigido -->
-    </ul>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>Estilo e Tradição em Cada Corte</h2>
+            <p>Na Barbearia Master, oferecemos serviços de alta qualidade com profissionais experientes para garantir sua satisfação.</p>
+            <button class="btn btn-primary" id="heroScheduleBtn">Agendar Horário</button>
+        </div>
+    </section>
 
-    <button id="menu-toggle" class="menu-toggle">☰</button>
-  </nav>
- </header>
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nossos Serviços</h2>
+                <p>Oferecemos uma variedade de serviços para cuidar da sua aparência</p>
+            </div>
+            <div class="services-grid" id="servicesList">
+                <!-- Serviços carregados via JavaScript -->
+            </div>
+        </div>
+    </section>
 
-  <!-- Hero -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <h2>Agende online seu próximo corte</h2>
-        <p>Horário individual. Um agendamento por pessoa. Tolerância de 10 minutos — chegue 5 min antes.</p>
-        <a class="btn primary" href="#agendar">Começar agora</a>
-      </div>
-      <div class="brand">
-        <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
-      </div>
+    <!-- Schedule Section -->
+    <section class="schedule" id="schedule">
+        <div class="container">
+            <div class="section-title">
+                <h2>Agendar Horário</h2>
+                <p>Escolha o serviço, data e horário para seu atendimento</p>
+            </div>
+            <div class="schedule-form">
+                <form id="scheduleForm">
+                    <div class="form-group">
+                        <label for="clientName">Nome Completo</label>
+                        <input type="text" id="clientName" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientPhone">Telefone</label>
+                        <input type="tel" id="clientPhone" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceSelect">Serviço</label>
+                        <select id="serviceSelect" class="form-control" required>
+                            <option value="">Selecione um serviço</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleDate">Data</label>
+                        <input type="date" id="scheduleDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Horário Disponível</label>
+                        <div class="time-slots" id="timeSlots">
+                            <!-- Horários carregados via JavaScript -->
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmar Agendamento</button>
+                </form>
+                <div id="scheduleMessage" style="margin-top: 15px; text-align: center; display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Acesso Restrito</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="user-type-selector">
+                <div class="user-type active" data-type="barber">Barbeiro</div>
+                <div class="user-type" data-type="security">Segurança</div>
+                <div class="user-type" data-type="admin">Administrador</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Entrar</button>
+            </form>
+            <div id="loginMessage" style="margin-top: 15px; text-align: center; display: none;"></div>
+        </div>
     </div>
-  </section>
 
-  <!-- Serviços -->
-  <main class="container">
-    <section id="servicos" class="card">
-      <h3>Serviços <span class="sub">Selecione o serviço para agendar</span></h3>
-      <div id="listaServicos" class="cards"></div>
-    </section>
-
-    <!-- Agendar -->
-    <section id="agendar" class="card">
-      <h3>Novo Agendamento</h3>
-      <form id="form-agenda" autocomplete="off">
-        <div class="grid">
-          <label>Seu nome*
-            <input type="text" id="nome" required />
-          </label>
-          <label>WhatsApp*
-            <input type="tel" id="telefone" placeholder="(15) 99999-9999" required />
-          </label>
-          <label>Serviço*
-            <select id="servico" required></select>
-          </label>
-          <label>Profissional*
-            <select id="profissional" required></select>
-          </label>
-          <label>Data*
-            <input type="date" id="data" required />
-          </label>
-          <label>Hora* (intervalos de 30min)
-            <input type="time" id="hora" step="1800" required />
-          </label>
+    <!-- Dashboard -->
+    <section class="dashboard" id="dashboard">
+        <div class="container">
+            <div class="dashboard-header">
+                <h2 class="dashboard-title" id="dashboardTitle">Dashboard do Barbeiro</h2>
+                <button class="btn btn-outline" id="logoutBtn">Sair</button>
+            </div>
+            
+            <div class="tabs">
+                <div class="tab active" data-tab="overview">Visão Geral</div>
+                <div class="tab" data-tab="appointments">Agendamentos</div>
+                <div class="tab" data-tab="services">Serviços</div>
+                <div class="tab" data-tab="reports">Relatórios</div>
+            </div>
+            
+            <div class="tab-content active" id="overviewTab">
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Agendamentos Hoje</h3>
+                        <div class="stat" id="todayAppointments">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Faturamento do Dia</h3>
+                        <div class="stat" id="todayRevenue">R$ 0,00</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Clientes Atendidos</h3>
+                        <div class="stat" id="servedClients">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Avaliação Média</h3>
+                        <div class="stat" id="averageRating">0.0</div>
+                    </div>
+                </div>
+                
+                <h3 style="margin-bottom: 15px;">Próximos Agendamentos</h3>
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Serviço</th>
+                            <th>Horário</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsList">
+                        <!-- Appointments will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="appointmentsTab">
+                <h3 style="margin-bottom: 15px;">Todos os Agendamentos</h3>
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Serviço</th>
+                            <th>Data</th>
+                            <th>Horário</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="allAppointmentsList">
+                        <!-- All appointments will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="servicesTab">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Gerenciar Serviços</h3>
+                    <button class="btn btn-primary" id="addServiceBtn">Adicionar Serviço</button>
+                </div>
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Descrição</th>
+                            <th>Preço</th>
+                            <th>Duração</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="servicesManagementList">
+                        <!-- Services management will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="tab-content" id="reportsTab">
+                <h3 style="margin-bottom: 15px;">Relatórios</h3>
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <h3>Agendamentos do Mês</h3>
+                        <div class="stat" id="monthAppointments">0</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Faturamento Mensal</h3>
+                        <div class="stat" id="monthRevenue">R$ 0,00</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Serviço Mais Popular</h3>
+                        <div class="stat" id="popularService">-</div>
+                    </div>
+                    <div class="dashboard-card">
+                        <h3>Taxa de Cancelamento</h3>
+                        <div class="stat" id="cancelRate">0%</div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <label>Observações
-          <textarea id="obs" rows="2" placeholder="Detalhes (opcional)"></textarea>
-        </label>
-        <div class="actions">
-          <button type="submit" class="btn primary">Agendar</button>
-          <button type="reset" class="btn">Limpar</button>
+    </section>
+
+    <!-- Modal para Gerenciar Serviços -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="serviceModalTitle">Adicionar Serviço</h2>
+                <button class="close-modal" onclick="closeServiceModal()">&times;</button>
+            </div>
+            <form id="serviceForm">
+                <input type="hidden" id="serviceId">
+                <div class="form-group">
+                    <label for="serviceName">Nome do Serviço</label>
+                    <input type="text" id="serviceName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="serviceDescription">Descrição</label>
+                    <textarea id="serviceDescription" class="form-control" rows="3"></textarea>
+                </div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="servicePrice">Preço (R$)</label>
+                        <input type="number" id="servicePrice" class="form-control" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serviceDuration">Duração (minutos)</label>
+                        <input type="number" id="serviceDuration" class="form-control" min="1" required>
+                    </div>
+                </div>
+                <div class="form-buttons">
+                    <button type="button" class="btn btn-outline" onclick="closeServiceModal()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Serviço</button>
+                </div>
+            </form>
         </div>
-        <p class="hint">* Obrigatório | Novo agendamento nasce como <b>pendente</b> e aguarda aprovação.</p>
-      </form>
-    </section>
+    </div>
 
-    <!-- Lista (cliente vê status / admin gerencia) -->
-    <section class="card">
-      <div class="list-header">
-        <h3>Agendamentos</h3>
-        <div class="filters">
-          <select id="filtroStatus">
-            <option value="">Todos os status</option>
-            <option value="pendente">Pendentes</option>
-            <option value="aprovado">Aprovados</option>
-            <option value="recusado">Recusados</option>
-          </select>
-          <select id="filtroProf">
-            <option value="">Todos os profissionais</option>
-          </select>
-          <input type="date" id="filtroData" />
-          <button id="btnLimparFiltros" class="btn">Limpar</button>
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Barbearia Master</h3>
+                    <p>Oferecemos os melhores serviços de barbearia com profissionais qualificados e ambiente acolhedor.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Horário de Funcionamento</h3>
+                    <p>Segunda a Sexta: 9h - 19h</p>
+                    <p>Sábado: 8h - 18h</p>
+                    <p>Domingo: 9h - 14h</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p><i class="fas fa-phone"></i> (11) 9999-9999</p>
+                    <p><i class="fas fa-envelope"></i> contato@barbeariamaster.com</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Rua Exemplo, 123 - Centro, São Paulo - SP</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Barbearia Master. Todos os direitos reservados.</p>
+            </div>
         </div>
-      </div>
+    </footer>
 
-      <div id="listaAgendamentos" class="list"></div>
-      <template id="tpl-agendamento">
-        <article class="item">
-          <div class="item-main">
-            <h4 class="item-titulo"></h4>
-            <p class="item-meta"></p>
-            <p class="item-obs"></p>
-            <span class="status-badge" data-status=""></span>
-          </div>
-          <div class="item-actions">
-            <button class="btn success btn-aprovar" style="display:none">Aprovar</button>
-            <button class="btn warn btn-recusar" style="display:none">Recusar</button>
-            <button class="btn danger btn-excluir">Excluir</button>
-          </div>
-        </article>
-      </template>
-      <p id="vazio" class="empty">Nenhum agendamento encontrado.</p>
-    </section>
-
-    <!-- Contato -->
-    <section id="contato" class="card">
-      <h3>Contato</h3>
-      <div class="grid grid-2">
-        <div>
-          <p><b>Endereço:</b> Votorantim/SP</p>
-          <p><b>WhatsApp:</b> <a id="wa" href="https://wa.me/5515998509488" target="_blank" rel="noopener">(15) 99850-9488</a></p>
-          <p><b>Política:</b> horário individual — 1 por pessoa — tolerância 10 min</p>
-          <div class="actions">
-            <a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/5515998509488?text=Olá! Quero agendar um horário.">Chamar no WhatsApp</a>
-            <a class="btn outline" target="_blank" rel="noopener" href="https://maps.google.com?q=Votorantim+SP+Monte+Verde">Ver no Mapa</a>
-          </div>
-        </div>
-        <iframe class="mapa" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-          src="https://maps.google.com/maps?q=Votorantim%20SP&t=m&z=14&output=embed&iwloc=near"></iframe>
-      </div>
-    </section>
-
-    <!-- Horários -->
-    <section id="horarios" class="card">
-      <h3>Horários de Funcionamento</h3>
-      <ul class="horarios">
-        <li><b>Terça:</b> 09:30–13:00 / 14:00–19:00</li>
-        <li><b>Quarta:</b> 09:30–13:00 / 14:00–19:00</li>
-        <li><b>Quinta:</b> 09:30–13:00 / 14:00–19:00</li>
-        <li><b>Sexta:</b> 09:30–13:00 / 14:00–22:00</li>
-        <li><b>Sábado:</b> 07:00–13:00 / 14:00–18:00</li>
-        <li><b>Domingo/Segunda:</b> Fechado</li>
-      </ul>
-    </section>
-  </main>
-
-  <!-- Modal Admin corrigido -->
-  <dialog id="modalAdmin">
-    <form method="dialog" class="modal">
-      <h3>Entrar como Admin</h3>
-      <label>Usuário
-        <input id="adminUser" type="text" placeholder="admin" value="admin" />
-      </label>
-      <label>Senha
-        <input id="adminPass" type="password" placeholder="1234" />
-      </label>
-      <div class="actions">
-        <button id="btnLogin" class="btn primary">Entrar</button>
-        <button id="btnFecharAdmin" class="btn">Fechar</button>
-      </div>
-      <p class="hint">Demonstração local (client-side). Em produção, faça no servidor.</p>
-    </form>
-  </dialog>
-
- <footer>
-  <div class="footer-content">
-    <img src="img/img2.png" alt="Logo Barbearia" class="logo-circular">
-    <span class="nome-barbearia">Barbearia</span>
-  </div>
- </footer>
-
-  <script src="script.js"></script>
-  <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const toggle = document.getElementById("menu-toggle");
-    const menu = document.getElementById("menu");
-
-    toggle.addEventListener("click", function() {
-      menu.classList.toggle("active");
-    });
-  });
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
